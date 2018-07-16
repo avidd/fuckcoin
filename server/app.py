@@ -30,7 +30,8 @@ def show_all():
 
 @app.route('/')
 def landing():
-    return render_template('landing.html')
+    coinNumber = request.args.get('coin')
+    return render_template('landing.html', coin=coinNumber)
 
 @app.route('/transact', methods=["POST"])
 def transact():

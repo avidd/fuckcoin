@@ -3,8 +3,14 @@
 
 <form action="/transact" method="POST">
   <label for="fuckcoin_id">Fuckcoin ID</label>
-  <input type="number" name="fuckcoin_id" id="fuckcoin_id" />
-
+  <input type="number"
+         name="fuckcoin_id"
+         id="fuckcoin_id"
+         {% if coin %}
+             value="{{coin}}"
+             disabled
+         {% endif %}
+  />
   <label for="giver">Who's giving it?</label>
   <input type="text" name="giver" id="giver" />
 

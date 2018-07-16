@@ -2,16 +2,26 @@ version: '3.1'
 
 services:
   server:
-    image: ubuntu:latest
+    build:
+      context: ./server
+      dockerfile: docker/Dockerfile
     volumes:
       - "./server:/usr/local/src"
-    entrypoint: /usr/local/src/scripts/entrypoint
+    ports:
+      - 5000:5000
+    environment:
+      DB_USER: root
+      DB_PASS: example
+      DB_HOST: db
+      DB: fuckcoin
     links:
       - db
 
   db:
     image: mysql
     restart: always
+    ports:
+      - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: example
       MYSQL_DATABASE: fuckcoin

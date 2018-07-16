@@ -1,0 +1,18 @@
+<!doctype html>
+<title>Hello from Flask</title>
+<table>
+  <tr>
+    <td>Fuckcoin ID</td>
+    <td>From</td>
+    <td>Who</td>
+    <td>When</td>
+  </tr>
+  {% for transaction in transactions %}
+    <tr>
+      <td>{{ transaction.fuckcoin_id }}</td>
+      <td>{{ transaction.giver }}</td>
+      <td>{{ transaction.recipient }}</td>
+      <td>{{ transaction.when }}</td>
+    </tr>
+  {% endfor %}
+</table>

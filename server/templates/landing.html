@@ -1,0 +1,20 @@
+<!doctype html>
+<title>Register a fuckcoin transaction</title>
+
+<form action="/transact" method="POST">
+  <label for="fuckcoin_id">Fuckcoin ID</label>
+  <input type="number" name="fuckcoin_id" id="fuckcoin_id" />
+
+  <label for="giver">Who's giving it?</label>
+  <input type="text" name="giver" id="giver" />
+
+  <label for="recipient">Who's getting it?</label>
+  <input type="text" name="recipient" id="recipient" />
+
+  <label for="purpose">What's being exchanged?</label>
+  <textarea id="purpose" name="purpose"></textarea>
+
+  <button type="submit">Submit</button>
+</form>
+
+

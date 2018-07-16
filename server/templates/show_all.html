@@ -6,6 +6,7 @@
     <td>From</td>
     <td>Who</td>
     <td>When</td>
+    <td>What for</td>
   </tr>
   {% for transaction in transactions %}
     <tr>
@@ -13,6 +14,7 @@
       <td>{{ transaction.giver }}</td>
       <td>{{ transaction.recipient }}</td>
       <td>{{ transaction.when }}</td>
+      <td>{{ transaction.purpose }}</td>
     </tr>
   {% endfor %}
 </table>

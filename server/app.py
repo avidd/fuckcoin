@@ -19,6 +19,7 @@ class Transaction(db.Model):
     fuckcoin_id = db.Column(db.Integer, nullable=False)
     giver = db.Column(db.Unicode(255), nullable=False)
     recipient = db.Column(db.Unicode(255), nullable=False)
+    purpose=db.Column(db.UnicodeText(), nullable=False)
     when=db.Column(db.DateTime, default=datetime.utcnow)
 
 @app.route('/all')
@@ -33,9 +34,10 @@ def landing():
 
 @app.route('/transact', methods=["POST"])
 def transact():
-    tran = Transaction( fuckcoin_id=request.form["fuckcoin_id"],
+    tran = Transaction(fuckcoin_id=request.form["fuckcoin_id"],
             giver=request.form["giver"],
-            recipient=request.form["recipient"])
+            recipient=request.form["recipient"],
+            purpose=request.form["purpose"])
     db.session.add(tran)
     db.session.commit()
     return redirect(url_for("show_all"))

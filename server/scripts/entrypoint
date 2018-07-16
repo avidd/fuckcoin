@@ -3,7 +3,8 @@
 set -e
 
 cd /usr/local/src
-apt-get update
-apt-get install python3.6
+apt-get -y update
+apt-get -y install python3.6 python-pip
+pip install -r ./requirements.txt
 
 exec "$@"

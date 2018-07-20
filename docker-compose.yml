@@ -11,6 +11,7 @@ services:
     environment:
       AWS_SHARED_CREDENTIALS_FILE: "/usr/local/src/.aws/config"
       AWS_PROFILE: "fuckcoin_dev"
+      DEBUG: 'yes'
     ports:
       - 5001:5001
 

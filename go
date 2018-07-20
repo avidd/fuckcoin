@@ -45,6 +45,7 @@ function mysql {
 }
 
 function start {
+  ${DC} build server db
   ${DC} up -d
 }
 

@@ -3,6 +3,8 @@ FROM ubuntu:latest
 WORKDIR /usr/local/src
 
 VOLUME /usr/local/src
+VOLUME /usr/local/lib/python3.6/dist-packages
+
 ADD ./docker/entrypoint /usr/bin/entrypoint
 
 RUN apt-get update

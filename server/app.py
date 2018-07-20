@@ -15,6 +15,14 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
+ecc_public_key = base64.b64decode("MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEqMI3pmvasBrNU9k1PyG+g56fnWSVrz8Y0zj9rY5XOlbN8hiQebEJ6ZD17nqjMoKcuzB80NCu7PoSzSBgkzq4Ig==")
+app = Flask(__name__)
+dbUriTemplate = Template("mysql+pymysql://$DB_USER:$DB_PASS@$DB_HOST/$DB")
+app.config['SQLALCHEMY_DATABASE_URI'] = dbUriTemplate.substitute(os.environ)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -32,12 +40,14 @@ def show_all():
 
 @app.route('/coin')
 def landing():
-    try:
-        coinNumber = request.args.get('sn')
-    except:
-        pass
+    print("IM A BANANA")
+    coinNumber = request.args.get('sn')
     signature = request.args.get('sig', None)
-    return render_template('landing.html', coin=coinNumber)
+    if coinNumber and signature:
+        decodedSig = base64.urlsafe_b64decode(signature)
+        isLegit = verify_sig(coinNumber, decodedSig)
+
+    return render_template('landing.html', isLegit=isLegit, coin=coinNumber)
 
 @app.route('/transact', methods=["POST"])
 def transact():
@@ -48,8 +58,6 @@ def transact():
     db.session.add(tran)
     db.session.commit()
     return redirect(url_for("show_all"))
-
-
 
 def verify_sig(sn, b64sig):
     global ecc_public_key
@@ -63,13 +71,3 @@ def verify_sig(sn, b64sig):
     except ValueError as e:
         print("The message is not authentic: {}".format(e))
         return False
-
-if __name__ == '_main_':
-    ecc_public_key = base64.b64decode("MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEqMI3pmvasBrNU9k1PyG+g56fnWSVrz8Y0zj9rY5XOlbN8hiQebEJ6ZD17nqjMoKcuzB80NCu7PoSzSBgkzq4Ig==")
-    app = Flask(__name__)
-    dbUriTemplate = Template("mysql+pymysql://$DB_USER:$DB_PASS@$DB_HOST/$DB")
-    app.config['SQLALCHEMY_DATABASE_URI'] = dbUriTemplate.substitute(os.environ)
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-    db = SQLAlchemy(app)
-    migrate = Migrate(app, db)

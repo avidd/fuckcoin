@@ -34,7 +34,8 @@ def show_all():
 def landing():
     try:
         coinNumber = request.args.get('sn')
-
+    except:
+        pass
     signature = request.args.get('sig', None)
     return render_template('landing.html', coin=coinNumber)
 
@@ -57,13 +58,11 @@ def verify_sig(sn, b64sig):
     verifier = DSS.new(ecc_public_key, 'fips-186-3')
     try:
         verifier.verify(h, sig)
-        print "The message is authentic."
+        print("The message is authentic.")
         return True
     except ValueError as e:
-        print "The message is not authentic: {}".format(e)
+        print("The message is not authentic: {}".format(e))
         return False
-
-
 
 if __name__ == '_main_':
 

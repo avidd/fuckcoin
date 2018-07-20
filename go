@@ -39,6 +39,7 @@ function helptext {
     echo "      server                      Open a shell to the server"
     echo "      db                          Open a shell to the database server"
     echo "    logs                          Tail the logs"
+    echo "    deploy-new-hotness            Deploy the new hotness"
 }
 
 function mysql {
@@ -63,6 +64,15 @@ function logs {
   ${DC} logs -f
 }
 
+function deploy-new-hotness {
+  if [ ! -f "./chalice/.aws/config" ]; then
+    error "Put an AWS shared credentials at ./chalice/.aws/config to deploy"
+    exit 1;
+  fi
+
+  ${DC} run --rm chalice scripts/deploy
+}
+
 login_docker
 
 [[ $@ ]] || { helptext; exit 1; }
@@ -83,6 +93,9 @@ case "$1" in
     ;;
     logs)
       logs
+    ;;
+    deploy-new-hotness)
+      deploy-new-hotness
     ;;
     *) helptext
     ;;

@@ -24,6 +24,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+import sys
+def frint(string):
+    print(string, file=sys.stderr)
+
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     fuckcoin_id = db.Column(db.Integer, nullable=False)
@@ -40,12 +44,11 @@ def show_all():
 
 @app.route('/coin')
 def landing():
-    print("IM A BANANA")
     coinNumber = request.args.get('sn')
     signature = request.args.get('sig', None)
     if coinNumber and signature:
-        decodedSig = base64.urlsafe_b64decode(signature)
-        isLegit = verify_sig(coinNumber, decodedSig)
+        isLegit = verify_sig(coinNumber, signature)
+        frint(coinNumber, signature, decodedSig, isLegit)
 
     return render_template('landing.html', isLegit=isLegit, coin=coinNumber)
 
@@ -66,8 +69,8 @@ def verify_sig(sn, b64sig):
     verifier = DSS.new(ecc_public_key, 'fips-186-3')
     try:
         verifier.verify(h, sig)
-        print("The message is authentic.")
+        frint("The message is authentic.")
         return True
     except ValueError as e:
-        print("The message is not authentic: {}".format(e))
+        frint("The message is not authentic: {}".format(e))
         return False

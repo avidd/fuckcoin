@@ -3,6 +3,5 @@ set -e
 
 cd /usr/local/src
 python3.6 -m pip install -r ./requirements.txt
-flask db upgrade
 
 exec "$@"

@@ -32,10 +32,12 @@ function helptext {
     echo ""
     echo "Available commands are:"
     echo "    start                         Run the app in dev mode, restarting the process whenever files change"
+    echo "    migrate-up                    Migrate the server to the newest schema"
     echo "    mysql                         Run mysql queries from outside the host"
     echo "    shell"
     echo "      server                      Open a shell to the server"
     echo "      db                          Open a shell to the database server"
+    echo "    logs                          Tail the logs"
 }
 
 function mysql {
@@ -46,9 +48,17 @@ function start {
   ${DC} up -d
 }
 
+function migrate-up {
+  ${DC} run --rm server flask db upgrade
+}
+
 function shell {
   ${DC} build $1
   ${DC} run --rm -p 9229:9229 $1 bash
+}
+
+function logs {
+  ${DC} logs -f
 }
 
 login_docker
@@ -59,12 +69,18 @@ case "$1" in
     mysql)
       mysql
     ;;
+    migrate-up)
+      migrate-up
+    ;;
     start)
       start
     ;;
     shell)
       shift
       shell $@
+    ;;
+    logs)
+      logs
     ;;
     *) helptext
     ;;

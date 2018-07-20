@@ -63,7 +63,11 @@ def transact():
     return redirect(url_for("show_all"))
 
 def verify_sig(sn, b64sig):
-    global ecc_public_key
+    # https://stackoverflow.com/posts/9807138/revisions
+    missing_padding = len(b64sig) % 4
+    if missing_padding != 0:
+        b64sig += '=' * (4 - missing_padding)
+
     sig = base64.urlsafe_b64decode(b64sig)
     h = SHA256.new(sn)
     verifier = DSS.new(ecc_public_key, 'fips-186-3')

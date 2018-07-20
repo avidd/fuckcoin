@@ -9,7 +9,7 @@ services:
       - "./chalice:/usr/local/src"
       - "chalice-virtualenv:/usr/local/src/.venv"
     ports:
-      - 6000:6000
+      - 5001:5001
 
   server:
     build:

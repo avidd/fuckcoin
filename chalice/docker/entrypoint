@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+
+cd /usr/local/src
+python3.6 -m venv /usr/local/src/.venv
+
+source ./.venv/bin/activate
+pip3 install -r ./requirements.txt
+
+exec "$@"

@@ -1,6 +1,16 @@
 version: '3.1'
 
 services:
+  chalice:
+    build:
+      context: ./chalice
+      dockerfile: docker/Dockerfile
+    volumes:
+      - "./chalice:/usr/local/src"
+      - "chalice-virtualenv:/usr/local/src/.venv"
+    ports:
+      - 6000:6000
+
   server:
     build:
       context: ./server
@@ -35,3 +45,4 @@ services:
 
 volumes:
   server-virtualenv:
+  chalice-virtualenv:

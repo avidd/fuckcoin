@@ -7,7 +7,7 @@ services:
       dockerfile: docker/Dockerfile
     volumes:
       - "./server:/usr/local/src"
-      - "./server/site-packages:/usr/local/lib/python3.6/dist-packages"
+      - "server-virtualenv:/usr/local/src/.venv"
     ports:
       - 5000:5000
     environment:
@@ -32,3 +32,6 @@ services:
     restart: always
     ports:
       - 8080:8080
+
+volumes:
+  server-virtualenv:

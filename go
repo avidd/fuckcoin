@@ -35,7 +35,7 @@ function helptext {
     echo "    migrate-up                    Migrate the server to the newest schema"
     echo "    mysql                         Run mysql queries from outside the host"
     echo "    shell"
-    echo "      chalice                     Open a shell to fancy new hotness"
+    echo "      zappa                     Open a shell to fancy new hotness"
     echo "      server                      Open a shell to the server"
     echo "      db                          Open a shell to the database server"
     echo "    logs                          Tail the logs"
@@ -47,7 +47,7 @@ function mysql {
 }
 
 function start {
-  ${DC} build server db chalice
+  ${DC} build server db zappa
   ${DC} up -d
 }
 
@@ -65,12 +65,12 @@ function logs {
 }
 
 function deploy-new-hotness {
-  if [ ! -f "./chalice/.aws/config" ]; then
-    error "Put an AWS shared credentials at ./chalice/.aws/config to deploy"
+  if [ ! -f "./zappa/.aws/config" ]; then
+    error "Put an AWS shared credentials at ./zappa/.aws/config to deploy"
     exit 1;
   fi
 
-  ${DC} run --rm chalice scripts/deploy
+  ${DC} run --rm zappa scripts/deploy
 }
 
 login_docker

@@ -1,13 +1,13 @@
 version: '3.1'
 
 services:
-  chalice:
+  zappa:
     build:
-      context: ./chalice
+      context: ./zappa
       dockerfile: docker/Dockerfile
     volumes:
-      - "./chalice:/usr/local/src"
-      - "chalice-virtualenv:/usr/local/src/.venv"
+      - "./zappa:/usr/local/src"
+      - "zappa-virtualenv:/usr/local/src/.venv"
     environment:
       AWS_SHARED_CREDENTIALS_FILE: "/usr/local/src/.aws/config"
       AWS_PROFILE: "fuckcoin_dev"
@@ -49,4 +49,4 @@ services:
 
 volumes:
   server-virtualenv:
-  chalice-virtualenv:
+  zappa-virtualenv:

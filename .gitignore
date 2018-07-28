@@ -1,3 +1,5 @@
 **.aws
 **.pyc
 **site-packages
+**node_modules
+**venv

@@ -1,20 +1,6 @@
 version: '3.1'
 
 services:
-  zappa:
-    build:
-      context: ./zappa
-      dockerfile: docker/Dockerfile
-    volumes:
-      - "./zappa:/usr/local/src"
-      - "zappa-virtualenv:/usr/local/src/.venv"
-    environment:
-      AWS_SHARED_CREDENTIALS_FILE: "/usr/local/src/.aws/config"
-      AWS_PROFILE: "fuckcoin_dev"
-      DEBUG: 'yes'
-    ports:
-      - 5001:5001
-
   server:
     build:
       context: ./server

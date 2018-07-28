@@ -2,6 +2,7 @@ import os
 import base64
 from datetime import datetime
 from string import Template
+import boto3
 
 try:
     from Crypto.Hash import SHA256
@@ -15,7 +16,6 @@ from flask import Flask, render_template, request, redirect, url_for
 
 ecc_public_key = base64.b64decode("MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEqMI3pmvasBrNU9k1PyG+g56fnWSVrz8Y0zj9rY5XOlbN8hiQebEJ6ZD17nqjMoKcuzB80NCu7PoSzSBgkzq4Ig==")
 app = Flask(__name__)
-dbUriTemplate = Template("mysql+pymysql://$DB_USER:$DB_PASS@$DB_HOST/$DB")
 
 import sys
 def frint(string):
@@ -34,7 +34,7 @@ def landing():
     coinNumber = request.args.get('sn')
     signature = request.args.get('sig', None)
     if coinNumber and signature:
-        frint(coinNumber, signature, decodedSig, isLegit)
+        frint(coinNumber, signature, isLegit)
         isLegit = verify_sig(coinNumber, signature)
 
     return render_template('landing.html', isLegit=isLegit, coin=coinNumber)

@@ -1,2 +1,4 @@
+boto3==1.7.65
 Flask==1.0.2
 pycryptodome==3.6.4
+werkzeug==0.14.1

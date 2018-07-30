@@ -5,16 +5,17 @@
   {% if submitted %}
     Thanks!
   {% else %}
-    <form action="/transact" method="POST">
-      <label for="fuckcoin_id">Fuckcoin ID</label>
-      <input type="number"
-            name="fuckcoin_id"
-            id="fuckcoin_id"
-            {% if coin %}
-                value="{{coin}}"
-                disabled
-            {% endif %}
-      />
+    <form action="{{ url_for('transact') }}" method="POST">
+      {% if fuckcoinId %}
+        <input type="hidden" name ="fuckcoinId" value="{{ fuckcoinId }}">
+        <h1>Coin #{{ fuckcoinId }}</h1>
+      {% else %}
+        <label for="fuckcoin_id">Fuckcoin ID</label>
+        <input type="number"
+              name="fuckcoin_id"
+              id="fuckcoin_id"
+        />
+      {% endif %}
       <label for="giver">Who's giving it?</label>
       <input type="text" name="giver" id="giver" />
 

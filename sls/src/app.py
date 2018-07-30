@@ -53,30 +53,36 @@ def coin():
     signature = request.args.get('sig', None)
     submitted = request.args.get('submitted', False)
 
-    resp = db.query(
-        KeyConditionExpression=Key("fuckcoinId").eq(coinNumber),
-        ScanIndexForward=False
-    )
+    transactions = []
+    if coinNumber:
+        resp = db.query(
+            KeyConditionExpression=Key("fuckcoinId").eq(coinNumber),
+            ScanIndexForward=False
+        )
 
-    transactions = localTimedTransactions(resp.get("Items"))
+        transactions = localTimedTransactions(resp.get("Items"))
+        if signature:
+            frint(coinNumber)
+            frint(signature)
+            isLegit = verify_sig(coinNumber, signature)
 
-    if signature:
-        frint(coinNumber)
-        frint(signature)
-        isLegit = verify_sig(coinNumber, signature)
-
-    return render_template('coin.html', transactions=transactions, submitted=submitted)
+    return render_template(
+               'coin.html',
+               transactions=transactions,
+               submitted=submitted,
+               fuckcoinId=coinNumber
+           )
 
 @app.route('/transact', methods=["POST"])
 def transact():
-    fuckcoinId = request.form["fuckcoin_id"]
+    fuckcoinId = request.form["fuckcoinId"]
 
     resp = db.put_item(
             Item={
                 'fuckcoinId': fuckcoinId,
-                'giver': giver,
-                'recipient': recipient,
-                'purpose': purpose,
+                'giver': request.form["giver"],
+                'recipient': request.form["recipient"],
+                'purpose': request.form["purpose"],
                 'when': datetime.utcnow().isoformat()
             }
         )

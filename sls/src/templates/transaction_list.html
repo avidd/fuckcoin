@@ -1,8 +1,8 @@
-<!doctype html>
-<title>Hello from Flask</title>
 <table>
   <tr>
-    <td>Fuckcoin ID</td>
+    {% if "fuckcoinId" in excludeFields %}
+      <td>Fuckcoin ID</td>
+    {% endif %}
     <td>From</td>
     <td>Who</td>
     <td>When</td>
@@ -10,10 +10,12 @@
   </tr>
   {% for transaction in transactions %}
     <tr>
-      <td>{{ transaction.fuckcoin_id }}</td>
+      {% if "fuckcoinId" in excludeFields %}
+        <td>{{ transaction.fuckcoinId }}</td>
+      {% endif %}
       <td>{{ transaction.giver }}</td>
       <td>{{ transaction.recipient }}</td>
-      <td>{{ transaction.when }}</td>
+      <td>{{ transaction.whenLocal.strftime("%e %b %Y %H:%M:%S%p") }}</td>
       <td>{{ transaction.purpose }}</td>
     </tr>
   {% endfor %}

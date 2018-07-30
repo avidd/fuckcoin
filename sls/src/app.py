@@ -1,6 +1,7 @@
 import os
 import base64
 from datetime import datetime
+from dateutil import tz, parser as dateParser
 from string import Template
 import boto3
 
@@ -39,6 +40,15 @@ class Transaction:
         self.purpose = purpose
         self.when = when
 
+    @property
+    def whenLocal(self):
+        when = dateParser.parse(self.when)
+        from_zone = tz.gettz('UTC')
+        to_zone = tz.gettz('America/Los_Angeles')
+        utc = when.replace(tzinfo=from_zone)
+        local = utc.astimezone(to_zone)
+        return local
+
     @classmethod
     def from_ddb(cls, ddb_resp):
         fuckcoinId = ddb_resp['fuckcoinId']['S']
@@ -57,12 +67,17 @@ def frint(string):
 @app.route('/all')
 def show_all():
     resp = client.scan(TableName=TRANSACTIONS_TABLE)
-    return jsonify(resp)
+
+    items = resp.get("Items");
+    transactions = [Transaction.from_ddb(item) for item in items]
+
+    return render_template('all_transactions.html', transactions=transactions, excludeFields=['fuckcoinId'])
 
 @app.route('/coin')
-def landing():
+def coin():
     coinNumber = request.args.get('sn')
     signature = request.args.get('sig', None)
+    submitted = request.args.get('submitted', False)
 
     resp = client.query(
         TableName=TRANSACTIONS_TABLE,
@@ -72,7 +87,6 @@ def landing():
         }
     )
 
-    frint(resp)
     items = resp.get("Items");
     items = [Transaction.from_ddb(item) for item in items]
 
@@ -81,14 +95,16 @@ def landing():
         frint(signature)
         isLegit = verify_sig(coinNumber, signature)
 
-    return render_template('show_all.html', transactions=items)
+    return render_template('coin.html', transactions=items, submitted=submitted)
 
 @app.route('/transact', methods=["POST"])
 def transact():
+    fuckcoinId = request.form["fuckcoin_id"]
+
     resp = client.put_item(
             TableName=TRANSACTIONS_TABLE,
             Item={
-                'fuckcoinId': {'S': request.form["fuckcoin_id"] },
+                'fuckcoinId': {'S': fuckcoinId},
                 'giver': {'S': request.form["giver"] },
                 'recipient': {'S': request.form["recipient"] },
                 'purpose': {'S': request.form["purpose"] },
@@ -96,7 +112,7 @@ def transact():
             }
         )
 
-    return redirect(url_for("show_all"))
+    return redirect(url_for("coin", sn=fuckcoinId, submitted='true'))
 
 def verify_sig(sn, b64sig):
     # https://stackoverflow.com/posts/9807138/revisions

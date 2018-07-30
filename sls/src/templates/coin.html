@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Register a transaction{% endblock %}
+
+{% block content %}
+  {% if submitted %}
+    Thanks!
+  {% else %}
+    <form action="/transact" method="POST">
+      <label for="fuckcoin_id">Fuckcoin ID</label>
+      <input type="number"
+            name="fuckcoin_id"
+            id="fuckcoin_id"
+            {% if coin %}
+                value="{{coin}}"
+                disabled
+            {% endif %}
+      />
+      <label for="giver">Who's giving it?</label>
+      <input type="text" name="giver" id="giver" />
+
+      <label for="recipient">Who's getting it?</label>
+      <input type="text" name="recipient" id="recipient" />
+
+      <label for="purpose">What's being exchanged?</label>
+      <textarea id="purpose" name="purpose"></textarea>
+
+      <button type="submit">Submit</button>
+    </form>
+  {% endif %}
+
+  {% include "transaction_list.html" %}
+{% endblock content%}
+

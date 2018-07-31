@@ -25,7 +25,6 @@ app = Flask(__name__)
 TRANSACTIONS_TABLE = os.environ['TRANSACTIONS_TABLE']
 IS_OFFLINE = os.environ.get('IS_OFFLINE')
 
-print(IS_OFFLINE)
 if IS_OFFLINE:
     db = boto3.resource(
         'dynamodb',
@@ -62,8 +61,6 @@ def coin():
 
         transactions = localTimedTransactions(resp.get("Items"))
         if signature:
-            frint(coinNumber)
-            frint(signature)
             isLegit = verify_sig(coinNumber, signature)
 
     return render_template(

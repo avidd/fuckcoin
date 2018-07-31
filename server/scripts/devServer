@@ -1,4 +1,0 @@
-#!/bin/bash
-set -e
-
-FLASK_ENV=development FLASK_APP=app.py flask run --host=0.0.0.0

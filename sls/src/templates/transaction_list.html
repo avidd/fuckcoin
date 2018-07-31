@@ -1,4 +1,4 @@
-<table>
+<table style="width: 100%">
   <tr>
     {% if "fuckcoinId" in excludeFields %}
       <td>Fuckcoin ID</td>
@@ -15,7 +15,7 @@
       {% endif %}
       <td>{{ transaction.giver }}</td>
       <td>{{ transaction.recipient }}</td>
-      <td>{{ transaction.whenLocal.strftime("%e %b %Y %H:%M:%S%p") }}</td>
+      <td>{{ transaction.whenLocal.strftime("%e %b %Y %H:%M%p") }}</td>
       <td>{{ transaction.purpose }}</td>
     </tr>
   {% endfor %}

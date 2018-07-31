@@ -2,35 +2,39 @@
 {% block title %}Register a transaction{% endblock %}
 
 {% block content %}
-  {% if submitted %}
-    Thanks!
-  {% else %}
-    <form action="{{ url_for('transact') }}" method="POST">
-      {% if fuckcoinId %}
-        <input type="hidden" name ="fuckcoinId" value="{{ fuckcoinId }}">
-        <h1>Coin #{{ fuckcoinId }}</h1>
-      {% else %}
-        <label for="fuckcoin_id">Fuckcoin ID</label>
-        <input type="number"
-              name="fuckcoin_id"
-              id="fuckcoin_id"
-        />
-      {% endif %}
-      <label for="giver">Who's giving it?</label>
-      <input type="text" name="giver" id="giver" />
+  <section>
+    {% if submitted %}
+      <h1>Thanks!</h1>
+    {% else %}
+      <form action="{{ url_for('transact') }}" method="POST">
+        {% if fuckcoinId %}
+          <input type="hidden" name ="fuckcoinId" value="{{ fuckcoinId }}">
+          <h1>Coin #{{ fuckcoinId }}</h1>
+        {% else %}
+          <label for="fuckcoin_id">Fuckcoin ID</label>
+          <input type="number"
+                name="fuckcoin_id"
+                id="fuckcoin_id"
+          />
+        {% endif %}
+        <label for="giver">Who's giving it?</label>
+        <input type="text" name="giver" id="giver" />
 
-      <label for="recipient">Who's getting it?</label>
-      <input type="text" name="recipient" id="recipient" />
+        <label for="recipient">Who's getting it?</label>
+        <input type="text" name="recipient" id="recipient" />
 
-      <label for="purpose">What's being exchanged?</label>
-      <textarea id="purpose" name="purpose"></textarea>
+        <label for="purpose">What's being exchanged?</label>
+        <textarea id="purpose" name="purpose"></textarea>
 
-      <button type="submit">Submit</button>
-    </form>
-  {% endif %}
+        <button type="submit" style="margin-top: 8px; width: 100%">
+          Submit
+        </button>
+      </form>
+    {% endif %}
+  </section>
 
-  <p>
+  <section>
     {% include "transaction_list.html" %}
-  </p>
+  </section>
 {% endblock content%}
 

@@ -34,7 +34,13 @@
   </section>
 
   <section>
-    {% include "transaction_list.html" %}
+    {% if transactions %}
+      {% include "transaction_list.html" %}
+    {% else %}
+      <h3>
+        This fuckcoin is brand-new!  Tell us where it's going.
+      </h3>
+    {% endif %}
   </section>
 {% endblock content%}
 

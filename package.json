@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev-server": "sls wsgi serve",
-    "dev-db": "sls dynamodb start",
+    "dev-server": "sls wsgi serve --stage=local",
+    "dev-db": "sls dynamodb start --stage=local",
     "deploy": "sls deploy"
   },
   "keywords": [],

@@ -1,29 +1,22 @@
-{% if transactions %}
-  <table style="width: 100%">
+<table style="width: 100%">
+  <tr>
+    {% if "fuckcoinId" in excludeFields %}
+      <td>Fuckcoin ID</td>
+    {% endif %}
+    <td>From</td>
+    <td>Who</td>
+    <td>When</td>
+    <td>What for</td>
+  </tr>
+  {% for transaction in transactions %}
     <tr>
       {% if "fuckcoinId" in excludeFields %}
-        <td>Fuckcoin ID</td>
+        <td>{{ transaction.fuckcoinId }}</td>
       {% endif %}
-      <td>From</td>
-      <td>Who</td>
-      <td>When</td>
-      <td>What for</td>
+      <td>{{ transaction.giver }}</td>
+      <td>{{ transaction.recipient }}</td>
+      <td>{{ transaction.whenLocal.strftime("%e %b %Y %H:%M%p") }}</td>
+      <td>{{ transaction.purpose }}</td>
     </tr>
-    {% for transaction in transactions %}
-      <tr>
-        {% if "fuckcoinId" in excludeFields %}
-          <td>{{ transaction.fuckcoinId }}</td>
-        {% endif %}
-        <td>{{ transaction.giver }}</td>
-        <td>{{ transaction.recipient }}</td>
-        <td>{{ transaction.whenLocal.strftime("%e %b %Y %H:%M%p") }}</td>
-        <td>{{ transaction.purpose }}</td>
-      </tr>
-    {% endfor %}
-  </table>
-{% else %}
-  <h3>
-    This fuckcoin is brand-new!  Tell us where it's going.
-  </h3>
-{% endif %}
-
+  {% endfor %}
+</table>

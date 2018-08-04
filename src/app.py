@@ -46,7 +46,7 @@ def show_all():
 
     return render_template('all_transactions.html', transactions=transactions, excludeFields=['fuckcoinId'])
 
-@app.route('/coin')
+@app.route('/')
 def coin():
     coinNumber = request.args.get('sn')
     signature = request.args.get('sig', None)

@@ -8,6 +8,7 @@ plugins:
   - serverless-wsgi
 
 custom:
+  tableName: 'transactions-table-${self:provider.stage}'
   wsgi:
     app: src.app.app
     packRequirements: false
@@ -33,10 +34,9 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource:
-        - { "Fn::GetAtt": ["TransactionsDynamoDBTableDev", "Arn" ] }
-        - { "Fn::GetAtt": ["TransactionsDynamoDBTableProd", "Arn" ] }
+        - { "Fn::GetAtt": ["TransactionsDynamoDBTable", "Arn" ] }
   environment:
-    TRANSACTIONS_TABLE: "transactions-table-${opt:stage}"
+    TRANSACTIONS_TABLE: ${self:custom.tableName}
 
 functions:
   app:
@@ -47,7 +47,7 @@ functions:
 
 resources:
   Resources:
-    TransactionsDynamoDBTableDev:
+    TransactionsDynamoDBTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:
         AttributeDefinitions:
@@ -67,25 +67,4 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        TableName: 'transactions-table-dev'
-    TransactionsDynamoDBTableProd:
-      Type: 'AWS::DynamoDB::Table'
-      Properties:
-        AttributeDefinitions:
-          -
-            AttributeName: fuckcoinId
-            AttributeType: S
-          -
-            AttributeName: when
-            AttributeType: S
-        KeySchema:
-          -
-            AttributeName: fuckcoinId
-            KeyType: HASH
-          -
-            AttributeName: when
-            KeyType: RANGE
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        TableName: 'transactions-table-prod'
+        TableName: ${self:custom.tableName}

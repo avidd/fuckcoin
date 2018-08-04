@@ -41,7 +41,7 @@ def frint(string):
 
 @app.route('/all')
 def show_all():
-    resp = db.scan() 
+    resp = db.scan()
     transactions = localTimedTransactions(resp.get("Items"))
 
     return render_template('all_transactions.html', transactions=transactions, excludeFields=['fuckcoinId'])
@@ -64,11 +64,11 @@ def coin():
             isLegit = verify_sig(coinNumber, signature)
 
     return render_template(
-               'coin.html',
-               transactions=transactions,
-               submitted=submitted,
-               fuckcoinId=coinNumber
-           )
+        'coin.html',
+        transactions=transactions,
+        submitted=submitted,
+        fuckcoinId=coinNumber
+    )
 
 @app.route('/transact', methods=["POST"])
 def transact():
